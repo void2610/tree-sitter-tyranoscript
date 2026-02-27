@@ -442,6 +442,10 @@
     {
       "type": "SYMBOL",
       "name": "script_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_error_sentinel"
     }
   ],
   "inline": [],

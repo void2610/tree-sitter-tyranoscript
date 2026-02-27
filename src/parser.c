@@ -9,10 +9,10 @@
 #define LANGUAGE_VERSION 15
 #define STATE_COUNT 58
 #define LARGE_STATE_COUNT 2
-#define SYMBOL_COUNT 44
+#define SYMBOL_COUNT 45
 #define ALIAS_COUNT 0
-#define TOKEN_COUNT 23
-#define EXTERNAL_TOKEN_COUNT 1
+#define TOKEN_COUNT 24
+#define EXTERNAL_TOKEN_COUNT 2
 #define FIELD_COUNT 2
 #define MAX_ALIAS_SEQUENCE_LENGTH 5
 #define MAX_RESERVED_WORD_SET_SIZE 0
@@ -42,27 +42,28 @@ enum ts_symbol_identifiers {
   sym_inline_text = 20,
   sym_blank_line = 21,
   sym_script_content = 22,
-  sym_source_file = 23,
-  sym_script_block = 24,
-  sym__line = 25,
-  sym__statement = 26,
-  sym_tag_line = 27,
-  sym_tag = 28,
-  sym_at_tag = 29,
-  sym_tag_name = 30,
-  sym_attribute = 31,
-  sym_attribute_name = 32,
-  sym_attribute_value = 33,
-  sym_at_attribute = 34,
-  sym_at_attribute_value = 35,
-  sym_quoted_string = 36,
-  sym_comment = 37,
-  sym_label = 38,
-  sym_speaker = 39,
-  aux_sym_source_file_repeat1 = 40,
-  aux_sym_tag_line_repeat1 = 41,
-  aux_sym_tag_repeat1 = 42,
-  aux_sym_at_tag_repeat1 = 43,
+  sym__error_sentinel = 23,
+  sym_source_file = 24,
+  sym_script_block = 25,
+  sym__line = 26,
+  sym__statement = 27,
+  sym_tag_line = 28,
+  sym_tag = 29,
+  sym_at_tag = 30,
+  sym_tag_name = 31,
+  sym_attribute = 32,
+  sym_attribute_name = 33,
+  sym_attribute_value = 34,
+  sym_at_attribute = 35,
+  sym_at_attribute_value = 36,
+  sym_quoted_string = 37,
+  sym_comment = 38,
+  sym_label = 39,
+  sym_speaker = 40,
+  aux_sym_source_file_repeat1 = 41,
+  aux_sym_tag_line_repeat1 = 42,
+  aux_sym_tag_repeat1 = 43,
+  aux_sym_at_tag_repeat1 = 44,
 };
 
 static const char * const ts_symbol_names[] = {
@@ -89,6 +90,7 @@ static const char * const ts_symbol_names[] = {
   [sym_inline_text] = "inline_text",
   [sym_blank_line] = "blank_line",
   [sym_script_content] = "script_content",
+  [sym__error_sentinel] = "_error_sentinel",
   [sym_source_file] = "source_file",
   [sym_script_block] = "script_block",
   [sym__line] = "_line",
@@ -136,6 +138,7 @@ static const TSSymbol ts_symbol_map[] = {
   [sym_inline_text] = sym_inline_text,
   [sym_blank_line] = sym_blank_line,
   [sym_script_content] = sym_script_content,
+  [sym__error_sentinel] = sym__error_sentinel,
   [sym_source_file] = sym_source_file,
   [sym_script_block] = sym_script_block,
   [sym__line] = sym__line,
@@ -250,6 +253,10 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
   },
   [sym_script_content] = {
     .visible = true,
+    .named = true,
+  },
+  [sym__error_sentinel] = {
+    .visible = false,
     .named = true,
   },
   [sym_source_file] = {
@@ -819,7 +826,7 @@ static const TSLexerMode ts_lex_modes[STATE_COUNT] = {
   [41] = {.lex_state = 42},
   [42] = {.lex_state = 0},
   [43] = {.lex_state = 0},
-  [44] = {.lex_state = 8, .external_lex_state = 1},
+  [44] = {.lex_state = 8, .external_lex_state = 2},
   [45] = {.lex_state = 0},
   [46] = {.lex_state = 0},
   [47] = {.lex_state = 29},
@@ -851,6 +858,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [anon_sym_POUND] = ACTIONS(1),
     [sym_blank_line] = ACTIONS(1),
     [sym_script_content] = ACTIONS(1),
+    [sym__error_sentinel] = ACTIONS(1),
   },
   [STATE(1)] = {
     [sym_source_file] = STATE(56),
@@ -1497,14 +1505,20 @@ static const TSParseActionEntry ts_parse_actions[] = {
 
 enum ts_external_scanner_symbol_identifiers {
   ts_external_token_script_content = 0,
+  ts_external_token__error_sentinel = 1,
 };
 
 static const TSSymbol ts_external_scanner_symbol_map[EXTERNAL_TOKEN_COUNT] = {
   [ts_external_token_script_content] = sym_script_content,
+  [ts_external_token__error_sentinel] = sym__error_sentinel,
 };
 
-static const bool ts_external_scanner_states[2][EXTERNAL_TOKEN_COUNT] = {
+static const bool ts_external_scanner_states[3][EXTERNAL_TOKEN_COUNT] = {
   [1] = {
+    [ts_external_token_script_content] = true,
+    [ts_external_token__error_sentinel] = true,
+  },
+  [2] = {
     [ts_external_token_script_content] = true,
   },
 };

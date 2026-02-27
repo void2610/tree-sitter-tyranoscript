@@ -5,9 +5,10 @@
 
 #include <string.h>
 
-// externals で定義したトークンの列挙
+// externals で定義したトークンの列挙（grammar.js の externals と順序を一致させる）
 enum TokenType {
   SCRIPT_CONTENT,
+  ERROR_SENTINEL,
 };
 
 // [endscript] の文字列（'[' は含まない）
@@ -34,6 +35,12 @@ void tree_sitter_tyranoscript_external_scanner_deserialize(
 // [endscript] が見つかるまで全文字を消費する
 bool tree_sitter_tyranoscript_external_scanner_scan(
   void *payload, TSLexer *lexer, const bool *valid_symbols) {
+
+  // エラー回復モードの検出: 全ての valid_symbols が true の場合、
+  // tree-sitter がエラー回復中なのでスキャンしない
+  if (valid_symbols[ERROR_SENTINEL]) {
+    return false;
+  }
 
   // script_content が期待されていない場合はスキップ
   if (!valid_symbols[SCRIPT_CONTENT]) {

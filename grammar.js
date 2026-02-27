@@ -8,8 +8,10 @@ module.exports = grammar({
   extras: $ => [/[ \t]/],
 
   // 外部スキャナーで認識するトークン
+  // _error_sentinel はエラー回復モード検出用のダミートークン（文法では使用しない）
   externals: $ => [
     $.script_content,
+    $._error_sentinel,
   ],
 
   rules: {
