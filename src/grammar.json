@@ -61,6 +61,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "speaker"
+        },
+        {
+          "type": "SYMBOL",
           "name": "at_tag"
         },
         {
@@ -319,9 +323,34 @@
       "type": "PATTERN",
       "value": "[^\\s\\r\\n]+"
     },
+    "speaker": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "speaker_name"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "speaker_name": {
+      "type": "PATTERN",
+      "value": "[^\\r\\n]+"
+    },
     "text_line": {
       "type": "PATTERN",
-      "value": "[^\\[;*@\\r\\n \\t][^\\[\\r\\n]*"
+      "value": "[^\\[;*@#\\r\\n \\t][^\\[\\r\\n]*"
     },
     "inline_text": {
       "type": "PATTERN",

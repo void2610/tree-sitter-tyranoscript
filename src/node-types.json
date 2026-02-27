@@ -174,11 +174,30 @@
           "named": true
         },
         {
+          "type": "speaker",
+          "named": true
+        },
+        {
           "type": "tag_line",
           "named": true
         },
         {
           "type": "text_line",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "speaker",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "speaker_name",
           "named": true
         }
       ]
@@ -232,6 +251,10 @@
     "named": false
   },
   {
+    "type": "#",
+    "named": false
+  },
+  {
     "type": "*",
     "named": false
   },
@@ -269,6 +292,10 @@
   },
   {
     "type": "label_name",
+    "named": true
+  },
+  {
+    "type": "speaker_name",
     "named": true
   },
   {

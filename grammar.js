@@ -25,6 +25,7 @@ module.exports = grammar({
     _statement: $ => choice(
       $.comment,
       $.label,
+      $.speaker,
       $.at_tag,
       $.tag_line,
       $.text_line,
@@ -111,8 +112,14 @@ module.exports = grammar({
     // ラベル名
     label_name: $ => /[^\s\r\n]+/,
 
-    // テキスト行（タグ・コメント・ラベル・@タグ・空行以外）
-    text_line: $ => /[^\[;*@\r\n \t][^\[\r\n]*/,
+    // #話者名（#、#?、#あかね など）
+    speaker: $ => seq('#', optional($.speaker_name)),
+
+    // 話者名
+    speaker_name: $ => /[^\r\n]+/,
+
+    // テキスト行（タグ・コメント・ラベル・@タグ・#話者・空行以外）
+    text_line: $ => /[^\[;*@#\r\n \t][^\[\r\n]*/,
 
     // タグの後に続くインラインテキスト
     inline_text: $ => /[^\[\r\n]+/,
