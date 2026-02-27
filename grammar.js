@@ -7,12 +7,27 @@ module.exports = grammar({
   // 空白はトークン間に入れることができる（改行は含まない）
   extras: $ => [/[ \t]/],
 
+  // 外部スキャナーで認識するトークン
+  externals: $ => [
+    $.script_content,
+  ],
+
   rules: {
     // ソースファイル全体
     // 改行で終わる行の繰り返し＋最終行（改行なし）
     source_file: $ => seq(
-      repeat(choice($._line, $.blank_line)),
+      repeat(choice($._line, $.blank_line, $.script_block)),
       optional($._statement),
+    ),
+
+    // [iscript]...[endscript] ブロック
+    // 末尾の改行も消費して blank_line にならないようにする
+    script_block: $ => seq(
+      alias(token(prec(1, /\[iscript\]/)), '[iscript]'),
+      /\r?\n/,
+      optional($.script_content),
+      alias(token(prec(1, /\[endscript\]/)), '[endscript]'),
+      optional(/\r?\n/),
     ),
 
     // 改行で終わる行（改行を必須にすることで行の途中で分割されるのを防ぐ）

@@ -149,6 +149,21 @@
     }
   },
   {
+    "type": "script_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "script_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "root": true,
@@ -171,6 +186,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "script_block",
           "named": true
         },
         {
@@ -275,6 +294,14 @@
     "named": false
   },
   {
+    "type": "[endscript]",
+    "named": false
+  },
+  {
+    "type": "[iscript]",
+    "named": false
+  },
+  {
     "type": "]",
     "named": false
   },
@@ -292,6 +319,10 @@
   },
   {
     "type": "label_name",
+    "named": true
+  },
+  {
+    "type": "script_content",
     "named": true
   },
   {

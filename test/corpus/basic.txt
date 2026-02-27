@@ -116,6 +116,48 @@
     (speaker_name)))
 
 ================
+スクリプトブロック
+================
+[iscript]
+var x = 1;
+console.log(x);
+[endscript]
+---
+
+(source_file
+  (script_block
+    (script_content)))
+
+================
+空のスクリプトブロック
+================
+[iscript]
+[endscript]
+---
+
+(source_file
+  (script_block))
+
+================
+スクリプトブロック前後に他の行
+================
+*start
+[iscript]
+f.test = true;
+[endscript]
+[l]
+---
+
+(source_file
+  (label
+    (label_name))
+  (script_block
+    (script_content))
+  (tag_line
+    (tag
+      (tag_name))))
+
+================
 複数行の組み合わせ
 ================
 *start
