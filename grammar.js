@@ -115,7 +115,8 @@ module.exports = grammar({
     string_content: $ => /[^"]*/,
 
     // []タグ用のクォートなし値
-    unquoted_value: $ => /[^\s\]"]+/,
+    // &entity[index] のような [] ペアも許容する
+    unquoted_value: $ => /[^\s\]"]+(\[[^\]]*\][^\s\]"]*)*/,
 
     // @タグ用のクォートなし値（]も許容）
     at_unquoted_value: $ => /[^\s"]+/,

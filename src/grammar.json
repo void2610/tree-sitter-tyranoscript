@@ -356,7 +356,7 @@
     },
     "unquoted_value": {
       "type": "PATTERN",
-      "value": "[^\\s\\]\"]+"
+      "value": "[^\\s\\]\"]+(\\[[^\\]]*\\][^\\s\\]\"]*)*"
     },
     "at_unquoted_value": {
       "type": "PATTERN",
