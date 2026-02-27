@@ -1,0 +1,85 @@
+================
+コメント
+================
+; これはコメントです
+---
+
+(source_file
+  (comment))
+
+================
+ラベル
+================
+*scene_start
+---
+
+(source_file
+  (label
+    (label_name)))
+
+================
+単純なタグ
+================
+[l]
+---
+
+(source_file
+  (tag_line
+    (tag
+      (tag_name))))
+
+================
+属性付きタグ
+================
+[bg storage="room.png" time=500]
+---
+
+(source_file
+  (tag_line
+    (tag
+      (tag_name)
+      (attribute
+        (attribute_name)
+        (attribute_value
+          (quoted_string
+            (string_content))))
+      (attribute
+        (attribute_name)
+        (attribute_value
+          (unquoted_value))))))
+
+================
+テキスト行
+================
+春子「こんにちは」
+---
+
+(source_file
+  (text_line))
+
+================
+複数行の組み合わせ
+================
+*start
+; シーン開始
+[bg storage="bg01.png"]
+これはテキストです。
+[l]
+---
+
+(source_file
+  (label
+    (label_name))
+  (comment)
+  (tag_line
+    (tag
+      (tag_name)
+      (attribute
+        (attribute_name)
+        (attribute_value
+          (quoted_string
+            (string_content))))))
+  (text_line)
+  (tag_line
+    (tag
+      (tag_name))))

@@ -1,0 +1,24 @@
+{
+  "name": "tree-sitter-tyranoscript",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for TyranoScript (.ks)",
+  "main": "bindings/node",
+  "keywords": [
+    "tree-sitter",
+    "tyranoscript",
+    "parser"
+  ],
+  "author": "void2610",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.18.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.24.0"
+  },
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "parse": "tree-sitter parse"
+  }
+}
