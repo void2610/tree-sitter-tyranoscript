@@ -58,6 +58,35 @@
   (text_line))
 
 ================
+@タグ（ショートハンド）
+================
+@showmenubutton
+---
+
+(source_file
+  (at_tag
+    (tag_name)))
+
+================
+属性付き@タグ
+================
+@bg storage="room.png" time=500
+---
+
+(source_file
+  (at_tag
+    (tag_name)
+    (at_attribute
+      (attribute_name)
+      (at_attribute_value
+        (quoted_string
+          (string_content))))
+    (at_attribute
+      (attribute_name)
+      (at_attribute_value
+        (at_unquoted_value)))))
+
+================
 複数行の組み合わせ
 ================
 *start

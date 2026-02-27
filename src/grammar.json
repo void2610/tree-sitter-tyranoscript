@@ -3,56 +3,73 @@
   "name": "tyranoscript",
   "rules": {
     "source_file": {
-      "type": "REPEAT",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_line"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "blank_line"
-          }
-        ]
-      }
-    },
-    "_line": {
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "comment"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "label"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "tag_line"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "text_line"
-            }
-          ]
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_line"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "blank_line"
+              }
+            ]
+          }
         },
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "\\r?\\n"
+              "type": "SYMBOL",
+              "name": "_statement"
             },
             {
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "_line": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_statement"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\r?\\n"
+        }
+      ]
+    },
+    "_statement": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "comment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "label"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "at_tag"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "tag_line"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "text_line"
         }
       ]
     },
@@ -102,6 +119,26 @@
         {
           "type": "STRING",
           "value": "]"
+        }
+      ]
+    },
+    "at_tag": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "@"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "tag_name"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "at_attribute"
+          }
         }
       ]
     },
@@ -164,6 +201,57 @@
         }
       ]
     },
+    "at_attribute": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "name",
+              "content": {
+                "type": "SYMBOL",
+                "name": "attribute_name"
+              }
+            },
+            {
+              "type": "STRING",
+              "value": "="
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "at_attribute_value"
+              }
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "attribute_name"
+          }
+        }
+      ]
+    },
+    "at_attribute_value": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "quoted_string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "at_unquoted_value"
+        }
+      ]
+    },
     "quoted_string": {
       "type": "SEQ",
       "members": [
@@ -197,6 +285,10 @@
       "type": "PATTERN",
       "value": "[^\\s\\]\"]+"
     },
+    "at_unquoted_value": {
+      "type": "PATTERN",
+      "value": "[^\\s\"]+"
+    },
     "comment": {
       "type": "SEQ",
       "members": [
@@ -229,7 +321,7 @@
     },
     "text_line": {
       "type": "PATTERN",
-      "value": "[^\\[;*\\r\\n \\t][^\\[\\r\\n]*"
+      "value": "[^\\[;*@\\r\\n \\t][^\\[\\r\\n]*"
     },
     "inline_text": {
       "type": "PATTERN",
@@ -246,11 +338,7 @@
       "value": "[ \\t]"
     }
   ],
-  "conflicts": [
-    [
-      "tag_line"
-    ]
-  ],
+  "conflicts": [],
   "precedences": [],
   "externals": [],
   "inline": [],

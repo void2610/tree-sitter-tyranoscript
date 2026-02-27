@@ -7,29 +7,27 @@ module.exports = grammar({
   // 空白はトークン間に入れることができる（改行は含まない）
   extras: $ => [/[ \t]/],
 
-  // tag_line 内での tag/inline_text の繰り返しの曖昧さを解決
-  conflicts: $ => [
-    [$.tag_line],
-  ],
-
   rules: {
     // ソースファイル全体
-    source_file: $ => repeat(
-      choice(
-        $._line,
-        $.blank_line,
-      )
+    // 改行で終わる行の繰り返し＋最終行（改行なし）
+    source_file: $ => seq(
+      repeat(choice($._line, $.blank_line)),
+      optional($._statement),
     ),
 
-    // 各行（改行で終わる、またはEOFで終わる）
+    // 改行で終わる行（改行を必須にすることで行の途中で分割されるのを防ぐ）
     _line: $ => seq(
-      choice(
-        $.comment,
-        $.label,
-        $.tag_line,
-        $.text_line,
-      ),
-      optional(/\r?\n/),
+      $._statement,
+      /\r?\n/,
+    ),
+
+    // 行の内容（改行を含まない）
+    _statement: $ => choice(
+      $.comment,
+      $.label,
+      $.at_tag,
+      $.tag_line,
+      $.text_line,
     ),
 
     // タグ行: タグのみ、またはタグ＋インラインテキストの組み合わせ
@@ -46,10 +44,18 @@ module.exports = grammar({
       ']',
     ),
 
+    // @tag_name param=value（[]タグのショートハンド記法）
+    // 行末まで1つのタグとして扱う
+    at_tag: $ => seq(
+      '@',
+      $.tag_name,
+      repeat($.at_attribute),
+    ),
+
     // タグ名
     tag_name: $ => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
-    // 属性: name=value または name のみ
+    // []タグ用の属性: name=value または name のみ
     attribute: $ => choice(
       seq(
         field('name', $.attribute_name),
@@ -62,10 +68,26 @@ module.exports = grammar({
     // 属性名
     attribute_name: $ => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
-    // 属性値
+    // []タグ用の属性値
     attribute_value: $ => choice(
       $.quoted_string,
       $.unquoted_value,
+    ),
+
+    // @タグ用の属性（unquoted_valueが]を含められるよう別定義）
+    at_attribute: $ => choice(
+      seq(
+        field('name', $.attribute_name),
+        '=',
+        field('value', $.at_attribute_value),
+      ),
+      field('name', $.attribute_name),
+    ),
+
+    // @タグ用の属性値
+    at_attribute_value: $ => choice(
+      $.quoted_string,
+      $.at_unquoted_value,
     ),
 
     // ダブルクォートで囲まれた文字列
@@ -74,8 +96,11 @@ module.exports = grammar({
     // 文字列の中身
     string_content: $ => /[^"]*/,
 
-    // クォートなしの値
+    // []タグ用のクォートなし値
     unquoted_value: $ => /[^\s\]"]+/,
+
+    // @タグ用のクォートなし値（]も許容）
+    at_unquoted_value: $ => /[^\s"]+/,
 
     // ; コメント
     comment: $ => seq(';', /[^\r\n]*/),
@@ -86,8 +111,8 @@ module.exports = grammar({
     // ラベル名
     label_name: $ => /[^\s\r\n]+/,
 
-    // テキスト行（タグ・コメント・ラベル・空行以外）
-    text_line: $ => /[^\[;*\r\n \t][^\[\r\n]*/,
+    // テキスト行（タグ・コメント・ラベル・@タグ・空行以外）
+    text_line: $ => /[^\[;*@\r\n \t][^\[\r\n]*/,
 
     // タグの後に続くインラインテキスト
     inline_text: $ => /[^\[\r\n]+/,
