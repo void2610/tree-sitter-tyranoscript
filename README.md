@@ -1,41 +1,43 @@
 # tree-sitter-tyranoscript
 
-[TyranoScript](https://tyrano.jp/)（`.ks`ファイル）用の[Tree-sitter](https://tree-sitter.github.io/)文法定義です。
+[日本語](README.ja.md)
 
-## 対応する構文要素
+[Tree-sitter](https://tree-sitter.github.io/) grammar for [TyranoScript](https://tyrano.jp/) (`.ks` files).
 
-| 要素 | 例 |
-|------|-----|
-| タグ | `[bg storage="room.png" time=500]` |
-| コメント | `; これはコメント` |
-| ラベル | `*scene_start` |
-| テキスト行 | `春子「こんにちは」` |
-| 属性（クォート有/無） | `storage="room.png"` / `time=500` |
-| インラインテキスト | `[l]テキスト` |
+## Supported Syntax
 
-## セットアップ
+| Element | Example |
+|---------|---------|
+| Tag | `[bg storage="room.png" time=500]` |
+| Comment | `; this is a comment` |
+| Label | `*scene_start` |
+| Text line | `春子「こんにちは」` |
+| Attribute (quoted/unquoted) | `storage="room.png"` / `time=500` |
+| Inline text | `[l]text` |
+
+## Setup
 
 ```bash
 npm install
 npx tree-sitter generate
 ```
 
-## テスト
+## Testing
 
 ```bash
 npx tree-sitter test
 ```
 
-## サンプルファイルのパース
+## Parse a Sample File
 
 ```bash
 npx tree-sitter parse sample.ks
 ```
 
-## 関連リポジトリ
+## Related Repositories
 
-- [tyranoscript-zed](https://github.com/void2610/tyranoscript-zed) — Zedエディタ拡張本体
+- [tyranoscript-zed](https://github.com/void2610/tyranoscript-zed) — Zed editor extension
 
-## ライセンス
+## License
 
 [MIT](LICENSE)
