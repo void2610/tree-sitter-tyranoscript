@@ -126,7 +126,9 @@ console.log(x);
 
 (source_file
   (script_block
-    (script_content)))
+    (iscript_open)
+    (script_content)
+    (endscript_close)))
 
 ================
 空のスクリプトブロック
@@ -136,7 +138,9 @@ console.log(x);
 ---
 
 (source_file
-  (script_block))
+  (script_block
+    (iscript_open)
+    (endscript_close)))
 
 ================
 スクリプトブロック前後に他の行
@@ -152,7 +156,9 @@ f.test = true;
   (label
     (label_name))
   (script_block
-    (script_content))
+    (iscript_open)
+    (script_content)
+    (endscript_close))
   (tag_line
     (tag
       (tag_name))))

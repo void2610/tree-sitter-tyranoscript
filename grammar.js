@@ -25,12 +25,18 @@ module.exports = grammar({
     // [iscript]...[endscript] ブロック
     // 末尾の改行も消費して blank_line にならないようにする
     script_block: $ => seq(
-      alias(token(prec(1, /\[iscript\]/)), '[iscript]'),
+      $.iscript_open,
       /\r?\n/,
       optional($.script_content),
-      alias(token(prec(1, /\[endscript\]/)), '[endscript]'),
+      $.endscript_close,
       optional(/\r?\n/),
     ),
+
+    // [iscript] 開始タグ（tag より優先度を高くして衝突を回避）
+    iscript_open: $ => prec(1, seq('[', 'iscript', ']')),
+
+    // [endscript] 終了タグ（tag より優先度を高くして衝突を回避）
+    endscript_close: $ => prec(1, seq('[', 'endscript', ']')),
 
     // 改行で終わる行（改行を必須にすることで行の途中で分割されるのを防ぐ）
     _line: $ => seq(
